@@ -1,9 +1,11 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import helloutils.AtomicHello;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,14 +13,18 @@ import java.util.Map;
 @Singleton
 public class HelloController extends Controller {
     Map<Integer,String> map = new HashMap<>();
+    private AtomicHello atomicHello;
+    @Inject
+    public HelloController(AtomicHello atomicHello){
+        this.atomicHello = atomicHello;
+    }
     public Result doSomething() {
-        String msg = "hello controller";
-        return ok(msg);
+        return ok(atomicHello.doSomethingFancy());
 
     }
 
     public Result helloUser(String uname) {
-        String msg = "hello " + uname;
+        String msg = atomicHello.doSomethingFancy() + uname;
         return ok(msg);
     }
 
